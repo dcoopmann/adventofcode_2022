@@ -1,9 +1,10 @@
 use adventofcode_2022::Problem;
+use adventofcode_2022::days::one::DayOne;
 use std::{env, fs, process};
 
 fn select_day(day: usize) -> Option<Box<dyn Problem>> {
     match day {
-        // 1 => Some(Box::new(DayOne {})),
+        1 => Some(Box::new(DayOne {})),
         // 2 => Some(Box::new(DayTwo {})),
         _ => None,
     }
@@ -34,5 +35,5 @@ fn main() {
     let input = get_puzzle_input(day_number).unwrap();
 
     println!("Result Part One: {}", day.part_one(&input));
-    println!("Result Part Two: {}", day.part_two(&input));
+    // println!("Result Part Two: {}", day.part_two(&input));
 }
