@@ -35,5 +35,5 @@ fn main() {
     let input = get_puzzle_input(day_number).unwrap();
 
     println!("Result Part One: {}", day.part_one(&input));
-    // println!("Result Part Two: {}", day.part_two(&input));
+    println!("Result Part Two: {}", day.part_two(&input));
 }
