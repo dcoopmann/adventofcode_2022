@@ -25,12 +25,12 @@ pub struct DayTwo {}
 fn play(adversary: &str, you: &str) -> u32 {
     if adversary == "A" {
         if you == "Y" {
-            return 6;
+            6
         } else if you == "X" {
             return 3;
         } else {
             return 0;
-        };
+        }
     } else if adversary == "B" {
         if you == "Z" {
             return 6;
@@ -39,32 +39,30 @@ fn play(adversary: &str, you: &str) -> u32 {
         } else {
             return 0;
         }
+    } else if you == "X" {
+        return 6;
+    } else if you == "Z" {
+        return 3;
     } else {
-        if you == "X" {
-            return 6;
-        } else if you == "Z" {
-            return 3;
-        } else {
-            return 0;
-        }
+        return 0;
     }
 }
 
 fn form_check(you: &str) -> u32 {
     if you == "X" {
-        return 1;
+        1
     } else if you == "Y" {
         return 2;
     } else {
         return 3;
-    };
+    }
 }
 
 fn apply_tactic<'a>(tactic: &'a str, adversary: &'a str) -> &'a str {
     if tactic == "X" {
         // return "loose";
         if adversary == "A" {
-            return "Z";
+            "Z"
         } else if adversary == "B" {
             return "X";
         } else {
@@ -121,7 +119,6 @@ impl Problem for DayTwo {
             let t = split.next().unwrap();
 
             let y = apply_tactic(t, a);
-            println!("{}", y);
 
             score += form_check(y);
             score += play(a, y);
