@@ -3,10 +3,10 @@ use crate::Problem;
 pub struct Day{}
 
 impl Problem for Day{
-    fn part_one(&self, input: &String) -> String{
+    fn part_one(&self, input: &str) -> String{
         input.to_string()
     }
-    fn part_two(&self, input: &String) -> String{
+    fn part_two(&self, input: &str) -> String{
         input.to_string()
     }
 }
