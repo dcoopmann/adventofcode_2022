@@ -59,13 +59,44 @@ fn form_check(you: &str) -> u32 {
         return 3;
     };
 }
+
+fn apply_tactic<'a>(tactic: &'a str, adversary: &'a str) -> &'a str {
+    if tactic == "X" {
+        // return "loose";
+        if adversary == "A" {
+            return "Z";
+        } else if adversary == "B" {
+            return "X";
+        } else {
+            return "Y";
+        }
+    } else if tactic == "Y" {
+        // return "draw";
+        if adversary == "A" {
+            return "X";
+        } else if adversary == "B" {
+            return "Y";
+        } else {
+            return "Z";
+        }
+    } else {
+        // return "win";
+        if adversary == "A" {
+            return "Y";
+        } else if adversary == "B" {
+            return "Z";
+        } else {
+            return "X";
+        }
+    }
+}
+
 impl Problem for DayTwo {
     fn part_one(&self, input: &str) -> String {
         let binding = input.to_string();
         let c_list = binding.split_terminator('\n');
-        // println!("{:?}", c_list);
 
-        let mut score:u32 = 0;
+        let mut score: u32 = 0;
 
         for entry in c_list {
             let mut split = entry.trim().split(' ');
@@ -79,7 +110,24 @@ impl Problem for DayTwo {
         score.to_string()
     }
     fn part_two(&self, input: &str) -> String {
-        input.to_string()
+        let binding = input.to_string();
+        let c_list = binding.split_terminator('\n');
+
+        let mut score: u32 = 0;
+
+        for entry in c_list {
+            let mut split = entry.trim().split(' ');
+            let a = split.next().unwrap();
+            let t = split.next().unwrap();
+
+            let y = apply_tactic(t, a);
+            println!("{}", y);
+
+            score += form_check(y);
+            score += play(a, y);
+        }
+
+        score.to_string()
     }
 }
 
@@ -95,5 +143,10 @@ mod tests {
         assert_eq!(day.part_one(input), "15");
     }
     #[test]
-    fn test_part_two() {}
+    fn test_part_two() {
+        let input = "A Y\n B X\n C Z\n";
+        let day = DayTwo {};
+
+        assert_eq!(day.part_two(input), "12");
+    }
 }
