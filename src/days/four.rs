@@ -10,12 +10,12 @@ fn check_containing(area_one: &str, area_two: &str) -> bool {
     let area_1 = a1.0..a1.1+1; 
     let area_2 = a2.0..a2.1+1;
 
-    if area_2.contains(&a1.0) && area_2.contains(&a1.1) {
+    if area_2.contains(&a1.0) || area_2.contains(&a1.1) {
         println!("Area one contained in two");
         return true;
     };
 
-    if area_1.contains(&a2.0) && area_1.contains(&a2.1) {
+    if area_1.contains(&a2.0) || area_1.contains(&a2.1) {
         println!("Area two contained in one");
         return true;
     };
