@@ -27,11 +27,23 @@ fn assign_value(item: &char) -> u32 {
     let binding = item.clone();
     println!("Binding: {}", binding);
 
-    if item.is_uppercase(){
+    if item.is_uppercase() {
         binding as u32 - 38
     } else {
-        binding as u32 - 96 
+        binding as u32 - 96
     }
+}
+
+fn find_doubles(needle: &str, stack : &str) -> String {
+    let mut doubles = String::new();
+    for n in needle.chars() {
+        for s in stack.chars() {
+            if n == s {
+                doubles += &s.to_string();
+            }
+        }
+    }
+    doubles
 }
 
 impl Problem for DayThree {
@@ -41,14 +53,6 @@ impl Problem for DayThree {
 
         let mut sum = 0;
 
-        println!("a {}", 'a' as u32 - 96);
-        println!("z {}", 'z' as u32 - 96);
-        println!("A {}", 'A' as u32 - 38);
-        println!("Z {}", 'Z' as u32 - 38);
-
-        println!("uppercase? A {}", 'A'.is_uppercase());
-        println!("uppercase? a {}", 'a'.is_uppercase());
-
         for backpack in backpacks {
             let b = backpack.trim(); // sanitize mostly for test input
             println!("{}", b);
@@ -56,11 +60,35 @@ impl Problem for DayThree {
             sum += assign_value(&item);
         }
 
-
         sum.to_string()
     }
+
     fn part_two(&self, input: &str) -> String {
-        input.to_string()
+        let binding = input.to_string();
+        let backpacks = binding.split('\n').collect::<Vec<_>>();
+
+        let mut sum = 0;
+        
+        let mut counter = 0;
+        while counter <= (backpacks.len()/3) +1 {
+            // let mut s = String::new();
+            let s1 = backpacks.get(counter).unwrap().trim() ;
+            let s2 = backpacks.get(counter+1).unwrap().trim() ;
+            let s3 = backpacks.get(counter+2).unwrap().trim() ;
+
+            let c1 = find_doubles(&s1, &s2);
+            println!("c1: {}", c1);
+            let c2 = find_doubles(&c1, &s3);
+            println!("c2: {}", c2);
+
+
+            let item = c2.trim()[0..1].parse::<char>().unwrap();
+            sum += assign_value(&item);
+
+            counter += 3;
+        }
+
+        sum.to_string()
     }
 }
 
@@ -81,5 +109,15 @@ mod tests {
         assert_eq!(day.part_one(input), "157");
     }
     #[test]
-    fn test_part_two() {}
+    fn test_part_two() {
+        let input = "vJrwpWtwJgWrhcsFMMfFFhFp
+        jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+        PmmdzqPrVvPwwTWBwg
+        wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+        ttgJtRGJQctTZtZT
+        CrZsJsPPZsGzwwsLwLmpwMDw";
+
+        let day = DayThree {};
+        assert_eq!(day.part_two(input), "70");
+    }
 }
