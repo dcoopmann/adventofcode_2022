@@ -24,7 +24,7 @@ fn find_double_item(backpack: &str) -> char {
 }
 
 fn assign_value(item: &char) -> u32 {
-    let binding = item.clone();
+    let binding = *item;
     println!("Binding: {}", binding);
 
     if item.is_uppercase(){

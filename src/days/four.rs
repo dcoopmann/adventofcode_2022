@@ -32,12 +32,12 @@ fn convert_to_range(area: &str) -> (u32, u32) {
 impl Problem for DayFour {
     fn part_one(&self, input: &str) -> String {
         let binding = input.to_string();
-        let ranges_vec = binding.split("\n").collect::<Vec<_>>();
+        let ranges_vec = binding.split('\n').collect::<Vec<_>>();
 
         let mut result = 0;
 
         for ranges in ranges_vec {
-            let areas = ranges.trim().split(",").collect::<Vec<_>>();
+            let areas = ranges.trim().split(',').collect::<Vec<_>>();
             println!("Area Vec: {:?}", areas);
             if check_containing(areas[0], areas[1]) {
                 println!("Area contained in other");
