@@ -102,8 +102,8 @@ impl Problem for DayFive {
             for _ in 0..i.count {
                 let to = i.to as usize;
                 let from = i.from as usize;
-                // println!("From: {:?}",plan[from]);
-                // println!("To: {:?}",plan[to]);
+            
+            for _ in 0..i.count {
                 let t = plan[from].pop_front().unwrap();
                 plan[to].push_front(t)
             }
