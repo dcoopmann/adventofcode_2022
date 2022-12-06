@@ -30,10 +30,8 @@ fn find_number_positions(number_line: &&str, numbers: Vec<char>) -> Vec<usize> {
 fn build_stack<'a>(plan: &'a [&'a str]) -> Vec<VecDeque<&'a str>> {
     let number_line = plan.last().unwrap();
     let numbers = find_stack_numbers(number_line);
-    // println!("{:?}", numbers);
 
     let positions = find_number_positions(number_line, numbers);
-    // println!("{:?}", positions);
     let mut base = Vec::new();
 
     for position in positions {
@@ -50,8 +48,6 @@ fn build_stack<'a>(plan: &'a [&'a str]) -> Vec<VecDeque<&'a str>> {
 
         base.push(t)
     }
-
-    // println!("{:?}", base);
     base
 }
 
@@ -72,7 +68,7 @@ impl Instruction {
     }
 }
 
-fn interpret_instructions(instructions: &[&str]) -> VecDeque<Instruction>{
+fn interpret_instructions(instructions: &[&str]) -> VecDeque<Instruction> {
     let mut instruction_que = VecDeque::new();
     for i in instructions {
         let t = find_instruction_numbers(i);
@@ -99,10 +95,9 @@ impl Problem for DayFive {
         let instruction_que = interpret_instructions(instructions);
 
         for i in instruction_que {
-            for _ in 0..i.count {
-                let to = i.to as usize;
-                let from = i.from as usize;
-            
+            let to = i.to as usize;
+            let from = i.from as usize;
+
             for _ in 0..i.count {
                 let t = plan[from].pop_front().unwrap();
                 plan[to].push_front(t)
@@ -117,7 +112,32 @@ impl Problem for DayFive {
     }
 
     fn part_two(&self, input: &str) -> String {
-        input.to_string()
+        let i = input.split('\n').collect::<Vec<_>>();
+        let s = i.split(|line| line.is_empty()).collect::<Vec<_>>();
+        let plan = s[0];
+        let instructions = s[1];
+
+        let mut plan = build_stack(plan);
+
+        let instruction_que = interpret_instructions(instructions);
+
+        let mut result = String::new();
+
+        for instruction in instruction_que {
+            let to = instruction.to as usize;
+            let from = instruction.from as usize;
+
+            let mut tv = Vec::new();
+
+            for _ in 0 .. instruction.count {
+                let t = plan[from].pop_front().unwrap();
+                tv.push(t)
+            }
+
+            println!("{:?}", tv)
+        }
+
+        result
     }
 }
 
@@ -151,8 +171,8 @@ move 1 from 2 to 1
 move 3 from 1 to 3
 move 2 from 2 to 1
 move 1 from 1 to 2";
-        
-                let day = DayFive {};
-                assert_eq!(day.part_two(input), "MCD")
+
+        let day = DayFive {};
+        assert_eq!(day.part_two(input), "MCD")
     }
 }
