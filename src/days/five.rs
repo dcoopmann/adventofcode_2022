@@ -72,7 +72,7 @@ impl Instruction {
     }
 }
 
-fn interpret_instructions(instructions: &[&str]) -> VecDeque<Instruction>{
+fn interpret_instructions(instructions: &[&str]) -> VecDeque<Instruction> {
     let mut instruction_que = VecDeque::new();
     for i in instructions {
         let t = find_instruction_numbers(i);
@@ -99,10 +99,9 @@ impl Problem for DayFive {
         let instruction_que = interpret_instructions(instructions);
 
         for i in instruction_que {
-            for _ in 0..i.count {
-                let to = i.to as usize;
-                let from = i.from as usize;
-            
+            let to = i.to as usize;
+            let from = i.from as usize;
+
             for _ in 0..i.count {
                 let t = plan[from].pop_front().unwrap();
                 plan[to].push_front(t)
@@ -151,8 +150,8 @@ move 1 from 2 to 1
 move 3 from 1 to 3
 move 2 from 2 to 1
 move 1 from 1 to 2";
-        
-                let day = DayFive {};
-                assert_eq!(day.part_two(input), "MCD")
+
+        let day = DayFive {};
+        assert_eq!(day.part_two(input), "MCD")
     }
 }
