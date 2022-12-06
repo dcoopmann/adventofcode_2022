@@ -72,6 +72,21 @@ impl Instruction {
     }
 }
 
+fn interpret_instructions(instructions: &[&str]) -> VecDeque<Instruction>{
+    let mut instruction_que = VecDeque::new();
+    for i in instructions {
+        let t = find_instruction_numbers(i);
+        let inst = Instruction::new(
+            t[0].to_string().parse::<u32>().unwrap(),
+            t[1].to_string().parse::<u32>().unwrap(),
+            t[2].to_string().parse::<u32>().unwrap(),
+        );
+        instruction_que.push_back(inst);
+    }
+
+    instruction_que
+}
+
 impl Problem for DayFive {
     fn part_one(&self, input: &str) -> String {
         let i = input.split('\n').collect::<Vec<_>>();
@@ -79,29 +94,11 @@ impl Problem for DayFive {
         let plan = s[0];
         let instructions = s[1];
 
-        // println!("Plan:\n{:?}", plan);
         let mut plan = build_stack(plan);
-        // println!("Build Plan:\n{:?}", plan);
 
-        // println!("Instructions:\n{:?}", instructions);
-        let mut instruction_que = VecDeque::new();
-        for i in instructions {
-            let t = find_instruction_numbers(i);
-            println!("{:?}", t);
-            let inst = Instruction::new(
-                t[0].to_string().parse::<u32>().unwrap(),
-                t[1].to_string().parse::<u32>().unwrap(),
-                t[2].to_string().parse::<u32>().unwrap(),
-            );
-            println!("Instruction: {:?}", inst);
-            instruction_que.push_back(inst);
-        }
+        let instruction_que = interpret_instructions(instructions);
 
-        println!("{:?}", instruction_que);
-        // let mut cn = 0;
         for i in instruction_que {
-            // cn += 1;
-            // println!("Run: {}", cn);
             for _ in 0..i.count {
                 let to = i.to as usize;
                 let from = i.from as usize;
@@ -111,8 +108,6 @@ impl Problem for DayFive {
                 plan[to].push_front(t)
             }
         }
-
-        println!("Restructured Plan:\n{:?}", plan);
 
         let mut result = "".to_string();
         for mut p in plan {
@@ -146,5 +141,18 @@ move 1 from 1 to 2";
         assert_eq!(day.part_one(input), "CMZ")
     }
     #[test]
-    fn test_part_two() {}
+    fn test_part_two() {
+        let input = "    [D]    
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
+
+move 1 from 2 to 1
+move 3 from 1 to 3
+move 2 from 2 to 1
+move 1 from 1 to 2";
+        
+                let day = DayFive {};
+                assert_eq!(day.part_two(input), "MCD")
+    }
 }
