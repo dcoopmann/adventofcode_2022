@@ -2,6 +2,8 @@ use crate::Problem;
 
 struct AocFileSystem {
     // Root file
+    // Maybe Implement Buildup fn here
+    // Calculate (call from AocFolders)sizes here after
     folders: Vec<AocFolder>,
 }
 
@@ -9,26 +11,90 @@ struct AocFolder {
     name: String,
     files: Vec<AocFile>,
     folders: Vec<AocFolder>,
-    size: u32,
+    // size: u32, || use size fn
     parent: Option<Box<AocFolder>>, // None == FS Root
 }
 
+impl AocFolder {
+    fn new(
+        name: String,
+        files: Vec<AocFile>,
+        folders: Vec<AocFolder>,
+        // size: u32,
+        parent: Option<Box<AocFolder>>,
+    ) -> AocFolder {
+        AocFolder {
+            name,
+            files,
+            folders,
+            // size,
+            parent,
+        }
+    }
+
+    fn size(&self) -> u32 {
+        let mut total = 0;
+        for f in &self.files {
+            total += f.size
+        }
+        total
+    }
+}
+
+#[derive(Debug)]
 struct AocFile {
     name: String,
     size: u32,
+}
+
+impl AocFile {
+    fn new(name: String, size: u32) -> AocFile {
+        AocFile { name, size }
+    }
 }
 
 fn interpret_input(list: Vec<&str>) {
     for i in list {
         println!("{:?}", i);
         if i.starts_with('$') {
-            println!("Is command")
+            println!("Is command");
+            interpret_command(i);
         } else if i.starts_with("dir") {
             println!("Is dir")
         } else {
-            println!("Is file")
+            println!("Is file");
+            interpret_file_entry(i)
         }
     }
+}
+
+fn interpret_command(aoc_cmd: &str) {
+    let cmd = aoc_cmd
+        .strip_prefix('$')
+        .unwrap()
+        .trim()
+        .split(' ')
+        .collect::<Vec<_>>();
+    if cmd[0] == "cd" {
+        move_command(cmd[1])
+    } else {
+        println!("ls --> NEXT ENTRY")
+    }
+}
+
+fn move_command(to: &str) {
+    if to == ".." {
+        println!("FS MOVE PARENT")
+    } else {
+        println!("FS MOVE INTO {}", to)
+    }
+}
+
+fn interpret_file_entry(entry: &str) {
+    let e = entry.split(' ').collect::<Vec<_>>();
+    let f = AocFile::new(e[1].to_string(), e[0].parse::<u32>().unwrap());
+
+    println!("{:?}", f)
 }
 
 pub struct DaySeven {}

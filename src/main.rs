@@ -1,6 +1,7 @@
 use adventofcode_2022::days::five::DayFive;
 use adventofcode_2022::days::four::DayFour;
 use adventofcode_2022::days::one::DayOne;
+use adventofcode_2022::days::seven::DaySeven;
 use adventofcode_2022::days::six::DaySix;
 use adventofcode_2022::days::three::DayThree;
 use adventofcode_2022::days::two::DayTwo;
@@ -18,6 +19,7 @@ fn select_day(day: usize) -> Option<Box<dyn Problem>> {
         4 => Some(Box::new(DayFour {})),
         5 => Some(Box::new(DayFive {})),
         6 => Some(Box::new(DaySix {})),
+        7 => Some(Box::new(DaySeven {})),
         _ => None,
     }
 }
@@ -30,6 +32,7 @@ fn get_puzzle_input(day: usize) -> Option<String> {
         4 => Some(fs::read_to_string("puzzle_input/day_four.txt").unwrap()),
         5 => Some(fs::read_to_string("puzzle_input/day_five.txt").unwrap()),
         6 => Some(fs::read_to_string("puzzle_input/day_six.txt").unwrap()),
+        7 => Some(fs::read_to_string("puzzle_input/day_seven.txt").unwrap()),
         _ => None,
     }
 }
