@@ -1,19 +1,19 @@
 use crate::Problem;
 
-struct AOC_FileSystem {
+struct AocFileSystem {
     // Root file
-    folders: Vec<AOC_Folder>,
+    folders: Vec<AocFolder>,
 }
 
-struct AOC_Folder {
+struct AocFolder {
     name: String,
-    files: Vec<AOC_File>,
-    folders: Vec<AOC_Folder>,
+    files: Vec<AocFile>,
+    folders: Vec<AocFolder>,
     size: u32,
-    parent: Option<Box<AOC_Folder>>, // None == FS Root
+    parent: Option<Box<AocFolder>>, // None == FS Root
 }
 
-struct AOC_File {
+struct AocFile {
     name: String,
     size: u32,
 }
