@@ -34,7 +34,7 @@ fn assign_value(item: &char) -> u32 {
     }
 }
 
-fn find_doubles(needle: &str, stack : &str) -> String {
+fn find_doubles(needle: &str, stack: &str) -> String {
     let mut doubles = String::new();
     for n in needle.chars() {
         for s in stack.chars() {
@@ -68,25 +68,27 @@ impl Problem for DayThree {
         let backpacks = binding.split('\n').collect::<Vec<_>>();
 
         let mut sum = 0;
-        
+
         let mut counter = 0;
-        while counter <= (backpacks.len()/3) +1 {
+        while counter <= backpacks.len() - 3 {
             // let mut s = String::new();
-            let s1 = backpacks.get(counter).unwrap().trim() ;
-            let s2 = backpacks.get(counter+1).unwrap().trim() ;
-            let s3 = backpacks.get(counter+2).unwrap().trim() ;
+            println!("Counter: {}", counter);
+
+            let s1 = backpacks.get(counter).unwrap().trim();
+            let s2 = backpacks.get(counter + 1).unwrap().trim();
+            let s3 = backpacks.get(counter + 2).unwrap().trim();
 
             let c1 = find_doubles(&s1, &s2);
             println!("c1: {}", c1);
             let c2 = find_doubles(&c1, &s3);
             println!("c2: {}", c2);
 
-
             let item = c2.trim()[0..1].parse::<char>().unwrap();
             sum += assign_value(&item);
 
             counter += 3;
         }
+        println!("Length backpacks: {}", backpacks.len());
 
         sum.to_string()
     }
