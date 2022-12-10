@@ -121,22 +121,31 @@ impl Problem for DayFive {
 
         let instruction_que = interpret_instructions(instructions);
 
-        let mut result = String::new();
-
         for instruction in instruction_que {
+            println!("{:?}", instruction);
+            println!("{:?}", plan);
+
             let to = instruction.to as usize;
             let from = instruction.from as usize;
 
-            let mut tv = Vec::new();
+            let mut tv = VecDeque::new();
 
-            for _ in 0 .. instruction.count {
+            for _ in 0..instruction.count {
                 let t = plan[from].pop_front().unwrap();
-                tv.push(t)
+                tv.push_front(t)
             }
+            println!("{:?}", tv);
 
-            println!("{:?}", tv)
+            for c in tv {
+                plan[to].push_front(c)
+            }
+            println!("{:?}", plan);
         }
 
+        let mut result = String::new();
+        for mut p in plan {
+            result += p.pop_front().unwrap();
+        }
         result
     }
 }
