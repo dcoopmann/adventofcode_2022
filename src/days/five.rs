@@ -30,10 +30,8 @@ fn find_number_positions(number_line: &&str, numbers: Vec<char>) -> Vec<usize> {
 fn build_stack<'a>(plan: &'a [&'a str]) -> Vec<VecDeque<&'a str>> {
     let number_line = plan.last().unwrap();
     let numbers = find_stack_numbers(number_line);
-    // println!("{:?}", numbers);
 
     let positions = find_number_positions(number_line, numbers);
-    // println!("{:?}", positions);
     let mut base = Vec::new();
 
     for position in positions {
@@ -50,8 +48,6 @@ fn build_stack<'a>(plan: &'a [&'a str]) -> Vec<VecDeque<&'a str>> {
 
         base.push(t)
     }
-
-    // println!("{:?}", base);
     base
 }
 
@@ -116,7 +112,36 @@ impl Problem for DayFive {
     }
 
     fn part_two(&self, input: &str) -> String {
-        input.to_string()
+        let i = input.split('\n').collect::<Vec<_>>();
+        let s = i.split(|line| line.is_empty()).collect::<Vec<_>>();
+        let plan = s[0];
+        let instructions = s[1];
+
+        let mut plan = build_stack(plan);
+
+        let instruction_que = interpret_instructions(instructions);
+
+        for instruction in instruction_que {
+            let to = instruction.to as usize;
+            let from = instruction.from as usize;
+
+            let mut tv = VecDeque::new();
+
+            for _ in 0..instruction.count {
+                let t = plan[from].pop_front().unwrap();
+                tv.push_front(t)
+            }
+
+            for c in tv {
+                plan[to].push_front(c)
+            }
+        }
+
+        let mut result = String::new();
+        for mut p in plan {
+            result += p.pop_front().unwrap();
+        }
+        result
     }
 }
 
