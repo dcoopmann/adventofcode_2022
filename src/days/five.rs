@@ -122,9 +122,6 @@ impl Problem for DayFive {
         let instruction_que = interpret_instructions(instructions);
 
         for instruction in instruction_que {
-            println!("{:?}", instruction);
-            println!("{:?}", plan);
-
             let to = instruction.to as usize;
             let from = instruction.from as usize;
 
@@ -134,12 +131,10 @@ impl Problem for DayFive {
                 let t = plan[from].pop_front().unwrap();
                 tv.push_front(t)
             }
-            println!("{:?}", tv);
 
             for c in tv {
                 plan[to].push_front(c)
             }
-            println!("{:?}", plan);
         }
 
         let mut result = String::new();
