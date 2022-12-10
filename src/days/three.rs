@@ -5,15 +5,11 @@ pub struct DayThree {}
 fn find_double_item(backpack: &str) -> char {
     let middle = backpack.len() / 2;
     let (comp1, comp2) = backpack.split_at(middle);
-    println!("Split at: {}", middle);
-    println!("Compartment 1: {}", comp1);
-    println!("Compartment 2: {}", comp2);
 
     let mut singularity = char::default();
     'outer: for cp1 in comp1.chars() {
         for cp2 in comp2.chars() {
             if cp1 == cp2 {
-                println!("Singularity: {:?}", cp1);
                 singularity = cp1;
                 break 'outer;
             }
@@ -24,8 +20,7 @@ fn find_double_item(backpack: &str) -> char {
 }
 
 fn assign_value(item: &char) -> u32 {
-    let binding = item.clone();
-    println!("Binding: {}", binding);
+    let binding = *item;
 
     if item.is_uppercase() {
         binding as u32 - 38
@@ -55,7 +50,6 @@ impl Problem for DayThree {
 
         for backpack in backpacks {
             let b = backpack.trim(); // sanitize mostly for test input
-            println!("{}", b);
             let item = find_double_item(b);
             sum += assign_value(&item);
         }
@@ -71,24 +65,18 @@ impl Problem for DayThree {
 
         let mut counter = 0;
         while counter <= backpacks.len() - 3 {
-            // let mut s = String::new();
-            println!("Counter: {}", counter);
-
             let s1 = backpacks.get(counter).unwrap().trim();
             let s2 = backpacks.get(counter + 1).unwrap().trim();
             let s3 = backpacks.get(counter + 2).unwrap().trim();
 
-            let c1 = find_doubles(&s1, &s2);
-            println!("c1: {}", c1);
-            let c2 = find_doubles(&c1, &s3);
-            println!("c2: {}", c2);
+            let c1 = find_doubles(s1, s2);
+            let c2 = find_doubles(&c1, s3);
 
             let item = c2.trim()[0..1].parse::<char>().unwrap();
             sum += assign_value(&item);
 
             counter += 3;
         }
-        println!("Length backpacks: {}", backpacks.len());
 
         sum.to_string()
     }
