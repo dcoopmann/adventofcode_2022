@@ -5,7 +5,10 @@ use adventofcode_2022::days::six::DaySix;
 use adventofcode_2022::days::three::DayThree;
 use adventofcode_2022::days::two::DayTwo;
 use adventofcode_2022::Problem;
-use std::{env, fs, process};
+
+use clap::Parser;
+
+use std::fs;
 
 fn select_day(day: usize) -> Option<Box<dyn Problem>> {
     match day {
@@ -31,22 +34,36 @@ fn get_puzzle_input(day: usize) -> Option<String> {
     }
 }
 
+#[derive(Parser, Debug)]
+#[command(author, version,  about, long_about=None)]
+struct Args {
+    ///Day
+    #[arg(short, long)]
+    day: usize,
+
+    ///Part
+    #[arg(short, long)]
+    part: usize,
+}
+
 fn main() {
-    let mut args = env::args();
-    args.next(); // Skip Path
+    let args = Args::parse();
 
-    let day_number = match args.next() {
-        Some(arg) => arg.parse().unwrap(),
-        None => {
-            eprintln!("Did not get day number.");
-            process::exit(1)
-        }
-    };
+    println!("Solving Day: {} Part {}", args.day, args.part);
 
-    let day = select_day(day_number).unwrap();
+    let day = select_day(args.day).unwrap();
 
-    let input = get_puzzle_input(day_number).unwrap();
-
-    println!("Result Part One: {}", day.part_one(&input));
-    println!("Result Part Two: {}", day.part_two(&input));
+    if args.part == 1 {
+        println!(
+            "Result Part One: {}",
+            day.part_one(&get_puzzle_input(args.day).unwrap())
+        );
+    } else if args.part == 2 {
+        println!(
+            "Result Part Two: {}",
+            day.part_two(&get_puzzle_input(args.day).unwrap())
+        );
+    } else {
+        println!("There are only part one or two, not part {}", args.part)
+    }
 }
